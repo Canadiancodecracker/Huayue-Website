@@ -194,7 +194,7 @@ export default function Product({ lang }: { lang: Lang }) {
             </div>
           </div>
           <div>
-            <img src="images/product-granules.jpg" alt="Calcium cyanamide" className="rounded-2xl shadow-2xl w-full object-cover aspect-[4/3]" />
+            <img src="/images/product-granules.jpg" alt="Calcium cyanamide" className="rounded-2xl shadow-2xl w-full object-cover aspect-[4/3]" />
           </div>
         </div>
       </section>
@@ -272,9 +272,9 @@ export default function Product({ lang }: { lang: Lang }) {
           </div>
           <p className="mt-4 text-sm text-slate-500">{t.packNote}</p>
           <div className="grid md:grid-cols-3 gap-6 mt-10">
-            <img src="images/packaging-bags.jpg" alt="25 kg bags" className="rounded-xl shadow-md object-cover aspect-[4/3] w-full" />
-            <img src="images/warehouse-jumbo.jpg" alt="Jumbo bags warehouse" className="rounded-xl shadow-md object-cover aspect-[4/3] w-full" />
-            <img src="images/container-loading.jpg" alt="Container loading" className="rounded-xl shadow-md object-cover aspect-[4/3] w-full" />
+            <img src="/images/packaging-bags.jpg" alt="25 kg bags" className="rounded-xl shadow-md object-cover aspect-[4/3] w-full" />
+            <img src="/images/warehouse-jumbo.jpg" alt="Jumbo bags warehouse" className="rounded-xl shadow-md object-cover aspect-[4/3] w-full" />
+            <img src="/images/container-loading.jpg" alt="Container loading" className="rounded-xl shadow-md object-cover aspect-[4/3] w-full" />
           </div>
         </div>
       </section>

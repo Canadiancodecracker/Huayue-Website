@@ -77,16 +77,16 @@ export default function Manufacturing({ lang }: { lang: Lang }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <SectionHead kicker={t.baseKicker} title={t.baseTitle} sub={t.baseBody} />
           <figure>
-            <img src="images/plant-aerial-rendering.jpg" alt="Plant aerial rendering" className="rounded-2xl shadow-xl w-full object-cover" />
+            <img src="/images/plant-aerial-rendering.jpg" alt="Plant aerial rendering" className="rounded-2xl shadow-xl w-full object-cover" />
             <figcaption className="mt-3 text-xs text-slate-500">{t.baseNote}</figcaption>
           </figure>
           <div className="grid md:grid-cols-2 gap-8 mt-12">
             <figure>
-              <img src="images/entrance-rendering.jpg" alt="Main entrance rendering" className="rounded-2xl shadow-lg w-full object-cover aspect-[16/9]" />
+              <img src="/images/entrance-rendering.jpg" alt="Main entrance rendering" className="rounded-2xl shadow-lg w-full object-cover aspect-[16/9]" />
               <figcaption className="mt-3 text-xs text-slate-500">{t.gateNote}</figcaption>
             </figure>
             <figure>
-              <img src="images/production-furnace.jpg" alt="Production facility" className="rounded-2xl shadow-lg w-full object-cover aspect-[16/9]" />
+              <img src="/images/production-furnace.jpg" alt="Production facility" className="rounded-2xl shadow-lg w-full object-cover aspect-[16/9]" />
             </figure>
           </div>
         </div>

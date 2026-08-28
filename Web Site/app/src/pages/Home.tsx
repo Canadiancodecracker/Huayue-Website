@@ -145,7 +145,7 @@ export default function Home({ lang }: { lang: Lang }) {
       {/* Hero */}
       <section className="relative bg-[#071E36]">
         <div className="absolute inset-0">
-          <img src="images/plant-aerial-rendering.jpg" alt="" className="w-full h-full object-cover opacity-45" />
+          <img src="/images/plant-aerial-rendering.jpg" alt="" className="w-full h-full object-cover opacity-45" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#071E36] via-[#071E36]/85 to-[#071E36]/40" />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36">
@@ -213,7 +213,7 @@ export default function Home({ lang }: { lang: Lang }) {
             </div>
           </div>
           <div className="relative">
-            <img src="images/product-granules.jpg" alt="Calcium cyanamide granules" className="rounded-2xl shadow-xl w-full object-cover aspect-[4/3]" />
+            <img src="/images/product-granules.jpg" alt="Calcium cyanamide granules" className="rounded-2xl shadow-xl w-full object-cover aspect-[4/3]" />
             <div className="absolute -bottom-5 -left-5 bg-[#0B2B4B] text-white rounded-xl px-6 py-4 shadow-lg">
               <div className="text-xs text-slate-300 tracking-wider uppercase">{lang === 'zh' ? '分子式' : 'Formula'}</div>
               <div className="text-2xl font-bold">CaCN₂</div>
@@ -311,7 +311,7 @@ export default function Home({ lang }: { lang: Lang }) {
       <section className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-12 items-center">
           <div className="order-2 lg:order-1">
-            <img src="images/production-furnace.jpg" alt="Production facility" className="rounded-2xl shadow-xl w-full object-cover aspect-[4/3]" />
+            <img src="/images/production-furnace.jpg" alt="Production facility" className="rounded-2xl shadow-xl w-full object-cover aspect-[4/3]" />
           </div>
           <div className="order-1 lg:order-2">
             <SectionHead kicker={t.mfgKicker} title={t.mfgTitle} sub={t.mfgSub} />
@@ -336,7 +336,7 @@ export default function Home({ lang }: { lang: Lang }) {
             <ButtonGhost to={href(lang, 'quality')}>{t.qcMore}</ButtonGhost>
           </div>
           <figure>
-            <img src="images/rd-center-rendering.jpg" alt="R&D Centre rendering" className="rounded-2xl shadow-xl w-full object-cover aspect-[4/3]" />
+            <img src="/images/rd-center-rendering.jpg" alt="R&D Centre rendering" className="rounded-2xl shadow-xl w-full object-cover aspect-[4/3]" />
             <figcaption className="mt-3 text-xs text-slate-500">{t.qcImgNote}</figcaption>
           </figure>
         </div>

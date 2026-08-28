@@ -83,7 +83,7 @@ export default function About({ lang }: { lang: Lang }) {
             <SectionHead kicker={t.whoKicker} title={t.whoTitle} sub={t.whoBody} />
           </div>
           <figure>
-            <img src="images/entrance-rendering.jpg" alt="Huayue main entrance rendering" className="rounded-2xl shadow-xl w-full object-cover aspect-[16/10]" />
+            <img src="/images/entrance-rendering.jpg" alt="Huayue main entrance rendering" className="rounded-2xl shadow-xl w-full object-cover aspect-[16/10]" />
             <figcaption className="mt-3 text-xs text-slate-500">{t.gateNote}</figcaption>
           </figure>
         </div>
@@ -108,7 +108,7 @@ export default function About({ lang }: { lang: Lang }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <SectionHead kicker={t.baseKicker} title={t.baseTitle} sub={t.baseBody} />
           <figure>
-            <img src="images/plant-aerial-rendering.jpg" alt="Plant aerial rendering" className="rounded-2xl shadow-xl w-full object-cover" />
+            <img src="/images/plant-aerial-rendering.jpg" alt="Plant aerial rendering" className="rounded-2xl shadow-xl w-full object-cover" />
             <figcaption className="mt-3 text-xs text-slate-500">{t.aerialNote}</figcaption>
           </figure>
         </div>

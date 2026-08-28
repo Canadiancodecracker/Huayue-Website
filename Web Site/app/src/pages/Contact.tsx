@@ -86,7 +86,7 @@ export default function Contact({ lang }: { lang: Lang }) {
               <p className="text-sm text-slate-600 leading-relaxed">{t.hoursV}</p>
             </div>
             <figure>
-              <img src="images/entrance-rendering.jpg" alt="Huayue entrance" className="rounded-xl shadow-md w-full object-cover aspect-[16/9]" />
+              <img src="/images/entrance-rendering.jpg" alt="Huayue entrance" className="rounded-xl shadow-md w-full object-cover aspect-[16/9]" />
               <figcaption className="mt-2 text-xs text-slate-500">{t.gateNote}</figcaption>
             </figure>
           </div>

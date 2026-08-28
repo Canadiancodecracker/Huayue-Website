@@ -124,7 +124,7 @@ export default function Quality({ lang }: { lang: Lang }) {
             </div>
           </div>
           <div className="lg:col-span-2">
-            <img src="images/lab-qc.jpg" alt="Laboratory QC" className="rounded-2xl shadow-lg w-full object-cover aspect-[4/3] lg:sticky lg:top-28" />
+            <img src="/images/lab-qc.jpg" alt="Laboratory QC" className="rounded-2xl shadow-lg w-full object-cover aspect-[4/3] lg:sticky lg:top-28" />
           </div>
         </div>
       </section>
@@ -135,7 +135,7 @@ export default function Quality({ lang }: { lang: Lang }) {
             <SectionHead kicker={t.rdKicker} title={t.rdTitle} sub={t.rdBody} />
           </div>
           <figure>
-            <img src="images/rd-center-rendering.jpg" alt="R&D Centre rendering" className="rounded-2xl shadow-xl w-full object-cover aspect-[4/3]" />
+            <img src="/images/rd-center-rendering.jpg" alt="R&D Centre rendering" className="rounded-2xl shadow-xl w-full object-cover aspect-[4/3]" />
             <figcaption className="mt-3 text-xs text-slate-500">{t.rdNote}</figcaption>
           </figure>
         </div>
