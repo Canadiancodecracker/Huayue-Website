@@ -40,7 +40,7 @@ pinyin = after[0] if after and (after[0][1]-after[0][0]) < (chars[1]-chars[0])*0
 
 pad = max(2, round(H * 0.008))
 wm_y0 = max(0, chars[0] - pad)
-wm_y1 = min(H, (pinyin[1] if pinyin else chars[1]) + pad)
+wm_y1 = min(H, chars[1] + pad)  # 字标版不含拼音
 wm_h = wm_y1 - wm_y0
 
 cols = runs(sub[chars[0]:chars[1]].sum(axis=0))

@@ -70,7 +70,7 @@ function Logo({ lang, variant = "wordmark" }: { lang: Lang; variant?: "wordmark"
       <img
         src={isFull ? "/brand/logo-huayue-full.svg" : "/brand/logo-huayue-wordmark.svg"}
         width={1399}
-        height={isFull ? 994 : 360}
+        height={isFull ? 994 : 283}
         className={isFull ? "h-28 w-auto" : "h-9 w-auto sm:h-11"}
         alt={lang === 'zh' ? '华岳新材料' : 'Huayue New Material'}
         loading="eager"
