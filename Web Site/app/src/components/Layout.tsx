@@ -37,7 +37,6 @@ const T = {
     tds: 'Technical Data Sheet (TDS)',
     sds: 'Safety Data Sheet (SDS)',
     specNote: 'Product standard HG/T 5922-2021 · CAS 156-62-7 · UN 1403 Class 4.3 PG III',
-    copyright: '© 2026 Shizuishan Huayue New Material Technology Co., Ltd. All rights reserved.',
     renderingNote: 'Images marked “rendering” are architectural renderings of the Huayue project.',
   },
   zh: {
@@ -52,25 +51,31 @@ const T = {
     tds: '技术数据表（TDS）',
     sds: '安全技术说明书（SDS）',
     specNote: '产品标准 HG/T 5922-2021 · CAS 156-62-7 · UN 1403 第 4.3 类 包装类别 Ⅲ',
-    copyright: '© 2026 石嘴山市华岳新材料科技有限公司 版权所有',
     renderingNote: '标注“效果图”的图片为华岳项目建筑效果图。',
   },
 }
 
-function Logo({ lang }: { lang: Lang }) {
+const ICP_NUMBER = "宁ICP备2026003413号-1"
+const POLICE_CODE: string = "" // 公安备案号纯数字，留空则整块不渲染
+
+function Logo({ lang, variant = "wordmark" }: { lang: Lang; variant?: "wordmark" | "full" }) {
+  const isFull = variant === "full"
+
   return (
-    <a href={href(lang, 'home')} className="flex items-center gap-3 group">
-      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0E9594] to-[#0B2B4B] flex items-center justify-center text-white font-bold text-lg tracking-tight">
-        HY
-      </div>
-      <div className="leading-tight">
-        <div className="font-bold text-[#0B2B4B] text-lg tracking-wide group-hover:text-[#0E9594] transition-colors">
-          HUAYUE
-        </div>
-        <div className="text-[11px] text-slate-500 tracking-wider">
-          {lang === 'zh' ? '华岳新材料 · 氰氨化钙制造' : 'Calcium Cyanamide Manufacturer'}
-        </div>
-      </div>
+    <a
+      href={href(lang, 'home')}
+      aria-label={lang === 'zh' ? '华岳新材料 首页' : 'Huayue Home'}
+      className="inline-flex shrink-0 items-center"
+    >
+      <img
+        src={isFull ? "/brand/logo-huayue-full.svg" : "/brand/logo-huayue-wordmark.svg"}
+        width={1399}
+        height={isFull ? 994 : 360}
+        className={isFull ? "h-28 w-auto" : "h-9 w-auto sm:h-11"}
+        alt={lang === 'zh' ? '华岳新材料' : 'Huayue New Material'}
+        loading="eager"
+        decoding="async"
+      />
     </a>
   )
 }
@@ -167,21 +172,20 @@ export function Header({ lang, page }: { lang: Lang; page: string }) {
 
 export function Footer({ lang }: { lang: Lang }) {
   const t = T[lang]
+  const currentYear = new Date().getFullYear()
+
   return (
     <footer className="bg-[#071E36] text-slate-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#0E9594] to-[#1B4A76] flex items-center justify-center text-white font-bold">
-                HY
-              </div>
-              <div>
-                <div className="text-white font-bold tracking-wide">HUAYUE</div>
-                <div className="text-xs text-slate-400">{t.tagline}</div>
-              </div>
+            <div className="mb-4">
+              <Logo lang={lang} variant="full" />
             </div>
             <p className="text-sm text-slate-400 leading-relaxed">{t.legal}</p>
+            {lang === 'en' ? (
+              <p className="text-sm text-slate-400 leading-relaxed">石嘴山市华岳新材料科技有限公司</p>
+            ) : null}
             <p className="text-sm text-slate-400 leading-relaxed mt-2">{t.address}</p>
           </div>
           <div>
@@ -214,7 +218,28 @@ export function Footer({ lang }: { lang: Lang }) {
         <div className="border-t border-slate-700/60 mt-12 pt-6 text-xs text-slate-500 space-y-2">
           <p>{t.specNote}</p>
           <p>{t.renderingNote}</p>
-          <p>{t.copyright}</p>
+          <p>© {currentYear} 石嘴山市华岳新材料科技有限公司 {lang === 'zh' ? '版权所有' : 'All rights reserved.'}</p>
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-2 text-center text-xs">
+            <a
+              className="hover:text-[#2DD4BF] transition-colors"
+              href="https://beian.miit.gov.cn/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {ICP_NUMBER}
+            </a>
+            {POLICE_CODE ? (
+              <a
+                className="inline-flex items-center gap-1.5 hover:text-[#2DD4BF] transition-colors"
+                href={`https://beian.mps.gov.cn/#/query/webSearch?code=${POLICE_CODE}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img src="/images/beian-gongan.png" alt="" className="h-4 w-4" loading="lazy" decoding="async" />
+                <span>宁公网安备{POLICE_CODE}号</span>
+              </a>
+            ) : null}
+          </div>
         </div>
       </div>
     </footer>
