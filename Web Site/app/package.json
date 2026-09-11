@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:aliyun": "tsc -b && vite build --mode aliyun",
+    "build:vercel": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { href, type Lang } from '../lib/router'
 
 const NAV = {
@@ -55,8 +55,9 @@ const T = {
   },
 }
 
-const ICP_NUMBER = "宁ICP备2026003413号-1"
-const POLICE_CODE: string = "" // 公安备案号纯数字，留空则整块不渲染
+const ICP_NUMBER = import.meta.env.VITE_ICP_NUMBER ?? ""
+const ICP_DOMAINS = ["huayuenm.com", "www.huayuenm.com"]
+const POLICE_CODE = import.meta.env.VITE_POLICE_CODE ?? "" // 公安备案号纯数字，留空则整块不渲染
 
 function Logo({ lang, variant = "wordmark" }: { lang: Lang; variant?: "wordmark" | "full" }) {
   const isFull = variant === "full"
@@ -173,6 +174,17 @@ export function Header({ lang, page }: { lang: Lang; page: string }) {
 export function Footer({ lang }: { lang: Lang }) {
   const t = T[lang]
   const currentYear = new Date().getFullYear()
+  const [showICP, setShowICP] = useState(false)
+
+  useEffect(() => {
+    const hostname = window.location.hostname
+    const shouldShowICP =
+      ICP_NUMBER.length > 0 &&
+      (ICP_DOMAINS.includes(hostname) || hostname === 'localhost' || hostname === '127.0.0.1')
+    const frame = window.requestAnimationFrame(() => setShowICP(shouldShowICP))
+
+    return () => window.cancelAnimationFrame(frame)
+  }, [])
 
   return (
     <footer className="bg-[#071E36] text-slate-300">
@@ -219,27 +231,29 @@ export function Footer({ lang }: { lang: Lang }) {
           <p>{t.specNote}</p>
           <p>{t.renderingNote}</p>
           <p>© {currentYear} 石嘴山市华岳新材料科技有限公司 {lang === 'zh' ? '版权所有' : 'All rights reserved.'}</p>
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-2 text-center text-xs">
-            <a
-              className="hover:text-[#2DD4BF] transition-colors"
-              href="https://beian.miit.gov.cn/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {ICP_NUMBER}
-            </a>
-            {POLICE_CODE ? (
+          {showICP ? (
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-2 text-center text-xs">
               <a
-                className="inline-flex items-center gap-1.5 hover:text-[#2DD4BF] transition-colors"
-                href={`https://beian.mps.gov.cn/#/query/webSearch?code=${POLICE_CODE}`}
+                className="hover:text-[#2DD4BF] transition-colors"
+                href="https://beian.miit.gov.cn/"
                 target="_blank"
                 rel="noreferrer"
               >
-                <img src="/images/beian-gongan.png" alt="" className="h-4 w-4" loading="lazy" decoding="async" />
-                <span>宁公网安备{POLICE_CODE}号</span>
+                {ICP_NUMBER}
               </a>
-            ) : null}
-          </div>
+              {POLICE_CODE ? (
+                <a
+                  className="inline-flex items-center gap-1.5 hover:text-[#2DD4BF] transition-colors"
+                  href={`https://beian.mps.gov.cn/#/query/webSearch?code=${POLICE_CODE}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img src="/images/beian-gongan.png" alt="" className="h-4 w-4" loading="lazy" decoding="async" />
+                  <span>宁公网安备{POLICE_CODE}号</span>
+                </a>
+              ) : null}
+            </div>
+          ) : null}
         </div>
       </div>
     </footer>
