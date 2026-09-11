@@ -33,6 +33,12 @@ const C = {
     susTitle: 'Safety and environmental management',
     susBody:
       'As a producer of a UN 1403 Class 4.3 water-reactive material, we manage handling, storage and transport under a documented SDS regime, with moisture exclusion, segregation of incompatibles and dry-media fire response as standard practice.',
+    teamKicker: 'Our People',
+    teamTitle: 'Growing Together',
+    teamBody:
+      'We believe growth is built on the people behind it — our colleagues and their families. Regular team activities are part of how Huayue works together.',
+    teamAlt1: 'Huayue team at Xishuangbanna National Park',
+    teamAlt2: 'Huayue team building group photo',
   },
   zh: {
     kicker: '关于华岳',
@@ -62,6 +68,11 @@ const C = {
     susKicker: '责任',
     susTitle: '安全与环境管理',
     susBody: '作为 UN 1403 第 4.3 类遇水反应物质的生产商，我们依据文件化的 SDS 制度管理操作、储存与运输，将隔绝潮气、禁配物分区与干介质消防作为标准实践。',
+    teamKicker: '团队',
+    teamTitle: '凝心聚力，砥砺前行',
+    teamBody: '我们相信企业的成长离不开每一位同事与其家人的支持。定期组织的团建活动，是华岳团队文化的一部分。',
+    teamAlt1: '华岳团队在西双版纳国家级风景名胜区合影',
+    teamAlt2: '华岳团队团建活动合影',
   },
 }
 
@@ -125,6 +136,31 @@ export default function About({ lang }: { lang: Lang }) {
             <div className="text-[#0E9594] text-sm font-semibold tracking-[0.2em] uppercase">{t.susKicker}</div>
             <h2 className="mt-3 text-2xl font-bold text-[#0B2B4B]">{t.susTitle}</h2>
             <p className="mt-4 text-slate-600 leading-relaxed">{t.susBody}</p>
+          </div>
+          <div className="bg-white border border-slate-200 rounded-xl p-8 md:col-span-2">
+            <div className="text-[#0E9594] text-sm font-semibold tracking-[0.2em] uppercase">{t.teamKicker}</div>
+            <h2 className="mt-3 text-2xl font-bold text-[#0B2B4B]">{t.teamTitle}</h2>
+            <p className="mt-4 text-slate-600 leading-relaxed">{t.teamBody}</p>
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="overflow-hidden rounded-xl">
+                <img
+                  src="/images/team-building-01.jpg"
+                  alt={t.teamAlt1}
+                  className="aspect-[4/3] object-cover rounded-xl w-full"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div className="overflow-hidden rounded-xl">
+                <img
+                  src="/images/team-building-02.jpg"
+                  alt={t.teamAlt2}
+                  className="aspect-[4/3] object-cover rounded-xl w-full"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
