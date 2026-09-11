@@ -61,7 +61,7 @@ const C = {
     mfgTitle: 'Manufactured in Shizuishan, Ningxia',
     mfgSub:
       'From raw-material control through production, quality control, QC release, packaging, warehousing and shipping — one site, one accountable chain.',
-    productionAlt: 'Nitrogen feed manifold and pneumatic control valves',
+    productionAlt: 'Pneumatic shut-off valves and positioners — close-up',
     mfgSteps: ['Raw-material control', 'Production', 'Quality control', 'QC release', 'Packaging', 'Warehousing', 'Shipping'],
     mfgMore: 'See manufacturing capability',
     qcKicker: 'R&D & Quality',
@@ -121,7 +121,7 @@ const C = {
     mfgKicker: '智能制造',
     mfgTitle: '宁夏石嘴山制造基地',
     mfgSub: '从原料控制、生产、品质控制、QC 放行、包装、仓储到出运——同一基地，全程可追溯。',
-    productionAlt: '原料氮气分气缸与气动控制阀组',
+    productionAlt: '气动切断阀与阀门定位器特写',
     mfgSteps: ['原料控制', '生产', '品质控制', 'QC 放行', '包装', '仓储', '出运'],
     mfgMore: '查看制造能力',
     qcKicker: '研发与质量',

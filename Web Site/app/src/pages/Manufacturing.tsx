@@ -11,8 +11,10 @@ const C = {
     baseBody:
       'The site sits inside an established chemical industrial park with direct access to calcium carbide feedstock, power and logistics. The 50,000 t/y lime-nitrogen granulation upgrading project extends the site’s capability toward granular fertilizer products.',
     baseNote: 'Architectural rendering of the Huayue project — aerial view',
-    productionAlt: 'Nitrogen feed manifold and pneumatic control valves',
-    productionNote: 'Nitrogen feed manifold and pneumatic control valves — site photo',
+    manifoldWideAlt: 'Nitrogen feed manifold and control valve bank — full view',
+    manifoldWideNote: 'Nitrogen feed manifold and control valve bank — site photo',
+    productionAlt: 'Pneumatic shut-off valves and positioners — close-up',
+    productionNote: 'Pneumatic shut-off valves and positioners — site photo',
     procKicker: 'Process',
     procTitle: 'From carbide to controlled product',
     procSteps: [
@@ -42,8 +44,10 @@ const C = {
     baseTitle: '宁夏石嘴山河滨工业园区',
     baseBody: '基地位于成熟的化工园区内，电石原料、电力与物流配套完善。5 万吨石灰氮颗粒肥产业升级改造项目将进一步拓展基地在颗粒肥料产品上的能力。',
     baseNote: '华岳项目鸟瞰建筑效果图',
-    productionAlt: '原料氮气分气缸与气动控制阀组',
-    productionNote: '原料氮气分气缸与气动控制阀组 · 现场实拍',
+    manifoldWideAlt: '原料氮气分气缸与气动控制阀组全景',
+    manifoldWideNote: '原料氮气分气缸与控制阀组 · 现场实拍',
+    productionAlt: '气动切断阀与阀门定位器特写',
+    productionNote: '气动切断阀与阀门定位器 · 现场实拍',
     procKicker: '工艺流程',
     procTitle: '从电石到受控产品',
     procSteps: [
@@ -86,8 +90,8 @@ export default function Manufacturing({ lang }: { lang: Lang }) {
           </figure>
           <div className="grid md:grid-cols-2 gap-8 mt-12">
             <figure>
-              <img src="/images/entrance-rendering.jpg" alt="Main entrance rendering" className="rounded-2xl shadow-lg w-full object-cover aspect-[16/9]" />
-              <figcaption className="mt-3 text-xs text-slate-500">{t.gateNote}</figcaption>
+              <img src="/images/nitrogen-manifold-wide.jpg" alt={t.manifoldWideAlt} className="rounded-2xl shadow-lg w-full object-cover aspect-[4/3]" />
+              <figcaption className="mt-3 text-xs text-slate-500">{t.manifoldWideNote}</figcaption>
             </figure>
             <figure>
               <img src="/images/production-furnace.jpg" alt={t.productionAlt} className="rounded-2xl shadow-lg w-full object-cover aspect-[4/3]" />
