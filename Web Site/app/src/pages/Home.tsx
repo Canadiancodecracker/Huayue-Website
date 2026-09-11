@@ -61,6 +61,7 @@ const C = {
     mfgTitle: 'Manufactured in Shizuishan, Ningxia',
     mfgSub:
       'From raw-material control through production, quality control, QC release, packaging, warehousing and shipping — one site, one accountable chain.',
+    productionAlt: 'Nitrogen feed manifold and pneumatic control valves',
     mfgSteps: ['Raw-material control', 'Production', 'Quality control', 'QC release', 'Packaging', 'Warehousing', 'Shipping'],
     mfgMore: 'See manufacturing capability',
     qcKicker: 'R&D & Quality',
@@ -120,6 +121,7 @@ const C = {
     mfgKicker: '智能制造',
     mfgTitle: '宁夏石嘴山制造基地',
     mfgSub: '从原料控制、生产、品质控制、QC 放行、包装、仓储到出运——同一基地，全程可追溯。',
+    productionAlt: '原料氮气分气缸与气动控制阀组',
     mfgSteps: ['原料控制', '生产', '品质控制', 'QC 放行', '包装', '仓储', '出运'],
     mfgMore: '查看制造能力',
     qcKicker: '研发与质量',
@@ -311,7 +313,7 @@ export default function Home({ lang }: { lang: Lang }) {
       <section className="bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-12 items-center">
           <div className="order-2 lg:order-1">
-            <img src="/images/production-furnace.jpg" alt="Production facility" className="rounded-2xl shadow-xl w-full object-cover aspect-[4/3]" />
+            <img src="/images/production-furnace.jpg" alt={t.productionAlt} className="rounded-2xl shadow-xl w-full object-cover aspect-[4/3]" />
           </div>
           <div className="order-1 lg:order-2">
             <SectionHead kicker={t.mfgKicker} title={t.mfgTitle} sub={t.mfgSub} />

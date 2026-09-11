@@ -11,6 +11,8 @@ const C = {
     baseBody:
       'The site sits inside an established chemical industrial park with direct access to calcium carbide feedstock, power and logistics. The 50,000 t/y lime-nitrogen granulation upgrading project extends the site’s capability toward granular fertilizer products.',
     baseNote: 'Architectural rendering of the Huayue project — aerial view',
+    productionAlt: 'Nitrogen feed manifold and pneumatic control valves',
+    productionNote: 'Nitrogen feed manifold and pneumatic control valves — site photo',
     procKicker: 'Process',
     procTitle: 'From carbide to controlled product',
     procSteps: [
@@ -40,6 +42,8 @@ const C = {
     baseTitle: '宁夏石嘴山河滨工业园区',
     baseBody: '基地位于成熟的化工园区内，电石原料、电力与物流配套完善。5 万吨石灰氮颗粒肥产业升级改造项目将进一步拓展基地在颗粒肥料产品上的能力。',
     baseNote: '华岳项目鸟瞰建筑效果图',
+    productionAlt: '原料氮气分气缸与气动控制阀组',
+    productionNote: '原料氮气分气缸与气动控制阀组 · 现场实拍',
     procKicker: '工艺流程',
     procTitle: '从电石到受控产品',
     procSteps: [
@@ -86,7 +90,8 @@ export default function Manufacturing({ lang }: { lang: Lang }) {
               <figcaption className="mt-3 text-xs text-slate-500">{t.gateNote}</figcaption>
             </figure>
             <figure>
-              <img src="/images/production-furnace.jpg" alt="Production facility" className="rounded-2xl shadow-lg w-full object-cover aspect-[16/9]" />
+              <img src="/images/production-furnace.jpg" alt={t.productionAlt} className="rounded-2xl shadow-lg w-full object-cover aspect-[4/3]" />
+              <figcaption className="mt-3 text-xs text-slate-500">{t.productionNote}</figcaption>
             </figure>
           </div>
         </div>
