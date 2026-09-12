@@ -134,13 +134,13 @@ export function CtaBand({ lang }: { lang: Lang }) {
     lang === 'zh'
       ? {
           title: '获取报价、样品或技术支持',
-          sub: '请提供目标应用、等级、年度用量与目的港，我们的国际销售团队将在一个工作日内回复。',
+          sub: '请提供目标应用、等级、年度用量与目的地/目的港，我们的公司销售团队将在一个工作日内回复。',
           quote: '询价',
           sample: '申请样品',
         }
       : {
           title: 'Request a quote, a sample, or technical support',
-          sub: 'Tell us your application, grade, annual volume and destination port — our international sales team replies within one business day.',
+          sub: 'Tell us your application, grade, annual volume and destination / port of discharge — our company sales team replies within one business day.',
           quote: 'Request a Quote',
           sample: 'Request a Sample',
         }
@@ -169,22 +169,22 @@ export function RfqForm({ lang }: { lang: Lang }) {
       ? {
           title: '询价 / 申请样品',
           name: '姓名', company: '公司', country: '国家/地区', email: '商务邮箱',
-          application: '应用领域', grade: '所需等级', volume: '年度需求量', port: '目的港', message: '留言',
+          application: '应用领域', grade: '所需等级', volume: '年度需求量', port: '目的地/目的港', message: '留言',
           applicationOpts: ['化工中间体（单氰胺/双氰胺）', '冶金脱硫', '农业/土壤处理', '环保/工业', '其他'],
           gradeOpts: ['优等品 Superior', '一等品 First', '合格品 Qualified', '待确认'],
           submit: '提交询价',
           note: '提交即表示同意我们就本次询价与您联系。',
-          done: '已收到您的询价信息。请同时发送至 sales@huayue-nm.com，我们将在一个工作日内回复。',
+          done: '已收到您的询价信息。请同时发送至 sales@huayuenm.com，我们将在一个工作日内回复。',
         }
       : {
           title: 'Request a Quote / Sample',
           name: 'Name', company: 'Company', country: 'Country', email: 'Business Email',
-          application: 'Application', grade: 'Required Grade', volume: 'Annual Requirement', port: 'Destination Port', message: 'Message',
+          application: 'Application', grade: 'Required Grade', volume: 'Annual Requirement', port: 'Destination / Port of Discharge', message: 'Message',
           applicationOpts: ['Chemical intermediates (cyanamide / DCD)', 'Steel desulfurization', 'Agriculture / soil treatment', 'Environmental / industrial', 'Other'],
           gradeOpts: ['Superior Grade', 'First Grade', 'Qualified Grade', 'To be confirmed'],
           submit: 'Submit Enquiry',
           note: 'By submitting you agree to be contacted about this enquiry.',
-          done: 'Thank you — your enquiry has been recorded. You can also email sales@huayue-nm.com; we reply within one business day.',
+          done: 'Thank you — your enquiry has been recorded. You can also email sales@huayuenm.com; we reply within one business day.',
         }
   const input =
     'w-full rounded-md border border-slate-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0E9594] focus:border-transparent bg-white'

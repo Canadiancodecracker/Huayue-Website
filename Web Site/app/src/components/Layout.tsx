@@ -221,13 +221,13 @@ export function Footer({ lang }: { lang: Lang }) {
           <div>
             <h4 className="text-white font-semibold mb-4 text-sm tracking-wider uppercase">{t.contactCol}</h4>
             <ul className="space-y-2 text-sm text-slate-400">
-              <li>sales@huayue-nm.com</li>
-              <li>tech@huayue-nm.com</li>
+              <li><a className="hover:text-[#2DD4BF] transition-colors" href="mailto:sales@huayuenm.com">sales@huayuenm.com</a></li>
+              <li><a className="hover:text-[#2DD4BF] transition-colors" href="mailto:tech@huayuenm.com">tech@huayuenm.com</a></li>
               <li className="pt-2"><a className="text-[#2DD4BF] hover:underline" href={href(lang, 'contact')}>{lang === 'zh' ? '询价 / 申请样品 →' : 'Request a Quote / Sample →'}</a></li>
             </ul>
           </div>
         </div>
-        <div className="border-t border-slate-700/60 mt-12 pt-6 text-xs text-slate-500 space-y-2">
+        <div className="border-t border-slate-700/60 mt-12 pt-6 text-xs text-slate-300 space-y-2">
           <p>{t.specNote}</p>
           <p>{t.renderingNote}</p>
           <p>© {currentYear} 石嘴山市华岳新材料科技有限公司 {lang === 'zh' ? '版权所有' : 'All rights reserved.'}</p>

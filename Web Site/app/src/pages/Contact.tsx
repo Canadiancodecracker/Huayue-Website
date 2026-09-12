@@ -6,28 +6,28 @@ const C = {
     kicker: 'Contact',
     title: 'Talk to a real manufacturer',
     sub: 'All enquiries are answered within one business day, in English or Chinese.',
-    sales: 'International Sales',
+    sales: 'Company Sales',
     salesD: 'Quotations, samples, packaging and logistics',
     tech: 'Technical Support',
     techD: 'Specifications, applications, TDS/SDS and COA',
     addr: 'Manufacturing Site',
     addrV: 'East of Xingyuan Road, Hebin Industrial Park, Huinong District, Shizuishan City, Ningxia, China',
     hours: 'Working Hours',
-    hoursV: 'Mon–Sat 08:30–17:30 (GMT+8) — covering CET mornings and JST afternoons',
+    hoursV: 'Mon–Sat 08:30–17:30 (GMT+8)',
     gateNote: 'Main entrance — architectural rendering',
   },
   zh: {
     kicker: '联系我们',
     title: '与真正的生产商直接对话',
     sub: '所有咨询将在一个工作日内以中文或英文回复。',
-    sales: '国际销售',
+    sales: '公司销售',
     salesD: '报价、样品、包装与物流',
     tech: '技术支持',
     techD: '技术指标、应用、TDS/SDS 与批次检验报告',
     addr: '生产基地地址',
     addrV: '中国宁夏石嘴山市惠农区河滨工业园区兴园路东',
     hours: '工作时间',
-    hoursV: '周一至周六 08:30–17:30（GMT+8）—— 覆盖欧洲上午与日韩下午时段',
+    hoursV: '周一至周六 08:30–17:30（GMT+8）',
     gateNote: '厂区主入口 — 建筑效果图',
   },
 }
@@ -59,8 +59,8 @@ export default function Contact({ lang }: { lang: Lang }) {
                   <div className="text-sm text-slate-500">{t.salesD}</div>
                 </div>
               </div>
-              <a href="mailto:sales@huayue-nm.com" className="mt-4 block text-[#0E9594] font-semibold hover:underline">
-                sales@huayue-nm.com
+              <a href="mailto:sales@huayuenm.com" className="mt-4 block text-[#0E9594] font-semibold hover:underline">
+                sales@huayuenm.com
               </a>
             </div>
             <div className="bg-white border border-slate-200 rounded-xl p-6">
@@ -75,8 +75,8 @@ export default function Contact({ lang }: { lang: Lang }) {
                   <div className="text-sm text-slate-500">{t.techD}</div>
                 </div>
               </div>
-              <a href="mailto:tech@huayue-nm.com" className="mt-4 block text-[#0E9594] font-semibold hover:underline">
-                tech@huayue-nm.com
+              <a href="mailto:tech@huayuenm.com" className="mt-4 block text-[#0E9594] font-semibold hover:underline">
+                tech@huayuenm.com
               </a>
             </div>
             <div className="bg-white border border-slate-200 rounded-xl p-6">
