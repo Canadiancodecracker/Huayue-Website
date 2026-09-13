@@ -225,6 +225,20 @@ export function Footer({ lang }: { lang: Lang }) {
               <li><a className="hover:text-[#2DD4BF] transition-colors" href="mailto:tech@huayuenm.com">tech@huayuenm.com</a></li>
               <li className="pt-2"><a className="text-[#2DD4BF] hover:underline" href={href(lang, 'contact')}>{lang === 'zh' ? '询价 / 申请样品 →' : 'Request a Quote / Sample →'}</a></li>
             </ul>
+            <div className="mt-6">
+              <p className="text-xs text-slate-400 mb-2">
+                {lang === 'zh' ? '扫码访问手机版' : 'Scan for mobile site'}
+              </p>
+              <img
+                src="/brand/qr-huayuenm.svg"
+                width={1480}
+                height={1480}
+                className="h-32 w-32 rounded-lg bg-white p-2"
+                alt={lang === 'zh' ? '扫码访问华岳新材料官网' : 'Scan to visit Huayue website'}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
           </div>
         </div>
         <div className="border-t border-slate-700/60 mt-12 pt-6 text-xs text-slate-300 space-y-2">
