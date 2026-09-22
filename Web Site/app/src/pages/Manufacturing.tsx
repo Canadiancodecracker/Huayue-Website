@@ -15,6 +15,10 @@ const C = {
     manifoldWideNote: 'Nitrogen feed manifold and control valve bank — site photo',
     productionAlt: 'Pneumatic shut-off valves and positioners — close-up',
     productionNote: 'Pneumatic shut-off valves and positioners — site photo',
+    siloValveAlt: 'Pneumatic discharge-valve actuator under the powder silo — commissioning',
+    siloValveNote: 'Pneumatic discharge-valve actuator commissioning — site photo',
+    analyzerAlt: 'Stainless-steel online gas analyzer enclosures',
+    analyzerNote: 'Online gas analyzer enclosures — site photo',
     procKicker: 'Process',
     procTitle: 'From carbide to controlled product',
     procSteps: [
@@ -48,6 +52,10 @@ const C = {
     manifoldWideNote: '原料氮气分气缸与控制阀组 · 现场实拍',
     productionAlt: '气动切断阀与阀门定位器特写',
     productionNote: '气动切断阀与阀门定位器 · 现场实拍',
+    siloValveAlt: '料仓出料阀气动执行机构调试',
+    siloValveNote: '料仓出料阀气动执行机构调试 · 现场实拍',
+    analyzerAlt: '不锈钢在线气体分析仪表箱',
+    analyzerNote: '在线气体分析仪表箱 · 现场实拍',
     procKicker: '工艺流程',
     procTitle: '从电石到受控产品',
     procSteps: [
@@ -96,6 +104,16 @@ export default function Manufacturing({ lang }: { lang: Lang }) {
             <figure>
               <img src="/images/production-furnace.jpg" alt={t.productionAlt} className="rounded-2xl shadow-lg w-full object-cover aspect-[4/3]" />
               <figcaption className="mt-3 text-xs text-slate-500">{t.productionNote}</figcaption>
+            </figure>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8 mt-8">
+            <figure>
+              <img src="/images/silo-valve-commissioning.jpg" alt={t.siloValveAlt} className="rounded-2xl shadow-lg w-full object-cover aspect-[4/3]" />
+              <figcaption className="mt-3 text-xs text-slate-500">{t.siloValveNote}</figcaption>
+            </figure>
+            <figure>
+              <img src="/images/gas-analyzer-cabinets.jpg" alt={t.analyzerAlt} className="rounded-2xl shadow-lg w-full object-cover aspect-[4/3]" />
+              <figcaption className="mt-3 text-xs text-slate-500">{t.analyzerNote}</figcaption>
             </figure>
           </div>
         </div>
