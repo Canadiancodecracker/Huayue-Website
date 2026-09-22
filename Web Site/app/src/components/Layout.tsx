@@ -223,6 +223,7 @@ export function Footer({ lang }: { lang: Lang }) {
             <ul className="space-y-2 text-sm text-slate-400">
               <li><a className="hover:text-[#2DD4BF] transition-colors" href="mailto:sales@huayuenm.com">sales@huayuenm.com</a></li>
               <li><a className="hover:text-[#2DD4BF] transition-colors" href="mailto:tech@huayuenm.com">tech@huayuenm.com</a></li>
+              <li className="pt-2">{lang === 'zh' ? '联系人：石女士' : 'Contact: Ms. Shi'}<br /><a className="hover:text-[#2DD4BF] transition-colors" href="tel:+8613995065499">{lang === 'zh' ? '手机：13995065499' : 'Mobile: +86 139 9506 5499'}</a></li>
               <li className="pt-2"><a className="text-[#2DD4BF] hover:underline" href={href(lang, 'contact')}>{lang === 'zh' ? '询价 / 申请样品 →' : 'Request a Quote / Sample →'}</a></li>
             </ul>
             <div className="mt-6">
