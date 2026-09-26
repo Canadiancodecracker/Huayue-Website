@@ -9,6 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700;800&family=Noto+Sans+SC:wght@700&display=swap" rel="stylesheet" />
 <style>
   :root { --bg1: #f4f6f9; --bg2: #d9dee6; --ink: #0f3c8f; --muted: #5b6b85; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --bg1: #2a3140; --bg2: #12161f; --ink: #0f3c8f; --muted: #a9b4c8; }
+  }
+  :root[data-theme="dark"] { --bg1: #2a3140; --bg2: #12161f; --ink: #0f3c8f; --muted: #a9b4c8; }
   html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg2); font-family: Barlow, system-ui, sans-serif; }
   body { background: radial-gradient(ellipse at 50% 35%, var(--bg1) 0%, var(--bg2) 75%); }
   canvas#stage { display: block; width: 100vw; height: 100vh; touch-action: none; }
