@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PVDF Resin Bag 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;600;700;800&family=Noto+Sans+SC:wght@700&display=swap" rel="stylesheet" />
+<style>
+  :root { --bg1: #f4f6f9; --bg2: #d9dee6; --ink: #0f3c8f; --muted: #5b6b85; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg2); font-family: Barlow, system-ui, sans-serif; }
+  body { background: radial-gradient(ellipse at 50% 35%, var(--bg1) 0%, var(--bg2) 75%); }
+  canvas#stage { display: block; width: 100vw; height: 100vh; touch-action: none; }
+  .hud { position: fixed; left: 16px; right: 16px; bottom: 16px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; pointer-events: none; }
+  .hud button { pointer-events: auto; font: 600 14px Barlow, sans-serif; color: var(--ink); background: rgba(255,255,255,.85); border: 1px solid rgba(15,60,143,.2); border-radius: 999px; padding: 8px 16px; cursor: pointer; backdrop-filter: blur(6px); }
+  .hud button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+  .hint { position: fixed; top: 14px; left: 0; right: 0; text-align: center; color: var(--muted); font-size: 13px; pointer-events: none; }
+  .loading { position: fixed; inset: 0; display: grid; place-items: center; color: var(--muted); font-size: 15px; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<div class="loading" id="loading">Loading 3D bag…</div>
+<canvas id="stage"></canvas>
+<div class="hint">Drag to rotate · scroll / pinch to zoom</div>
+<div class="hud">
+  <button id="btnSpin" aria-pressed="true">Auto-rotate</button>
+  <button id="btnFront">Front</button>
+  <button id="btnBack">Back</button>
+  <button id="btnPair" aria-pressed="false">Show pair</button>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+/* ---------- palette & bag dimensions (scene units ≈ metres) ---------- */
+const C = { navy: '#0f3c8f', teal: '#14809c', cyan: '#27bcd4', red: '#e2231a', white: '#ffffff', paper: '#fbfcfd', grey: '#233a66' };
+const BAG = { w: 0.5, h: 0.78, d: 0.16 };           // 25 kg valve/open-mouth bag
+const PX = 1024 / BAG.w;                              // canvas pixels per unit width
+
+/* ---------- canvas helpers ---------- */
+function makeCanvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+function font(weight, size, fam = 'Barlow') { return `${weight} ${size}px "${fam}", "Arial Narrow", Arial, sans-serif`; }
+
+// Fufeng mark: red octagon with white "S" stripes
+function drawLogo(g, cx, cy, r) {
+  g.save(); g.translate(cx, cy);
+  g.beginPath();
+  for (let i = 0; i < 8; i++) { const a = Math.PI / 8 + i * Math.PI / 4; g.lineTo(Math.cos(a) * r, Math.sin(a) * r); }
+  g.closePath(); g.fillStyle = C.red; g.fill();
+  g.clip();
+  g.fillStyle = C.white;
+  const bar = r * 0.2, gap = r * 0.12;
+  g.save(); g.transform(1, 0, -0.35, 1, 0, 0);
+  // three staggered bars forming a stylised S
+  g.fillRect(-r * 0.15, -bar * 1.5 - gap, r * 1.3, bar);
+  g.fillRect(-r * 0.65, -bar * 0.5, r * 1.3, bar);
+  g.fillRect(-r * 1.15, bar * 0.5 + gap, r * 1.3, bar);
+  g.restore();
+  g.restore();
+}
+
+function drawHeader(g, W, y) {
+  const s = W / 1024;
+  drawLogo(g, 118 * s, y, 58 * s);
+  g.fillStyle = '#111'; g.textBaseline = 'alphabetic'; g.textAlign = 'left';
+  g.font = font(700, 58 * s, 'Noto Sans SC'); g.fillText('氟峰', 190 * s, y - 2 * s);
+  g.font = font(800, 42 * s); g.fillText('fufeng', 190 * s, y + 48 * s);
+  g.fillStyle = C.navy; g.fillRect(360 * s, y - 55 * s, 4 * s, 115 * s);
+  g.font = font(800, 104 * s); g.fillText('TOPFLON', 400 * s, y + 38 * s);
+  const tw = g.measureText('TOPFLON').width;
+  g.font = font(600, 22 * s); g.fillText('®', 400 * s + tw + 4 * s, y - 30 * s);
+}
+
+function drawBottomWave(g, W, H, top) {
+  // navy base with cyan swoosh rising to the right
+  g.fillStyle = C.cyan;
+  g.beginPath(); g.moveTo(0, top + 40); g.bezierCurveTo(W * 0.35, top + 60, W * 0.7, top + 10, W, top - 55);
+  g.lineTo(W, H); g.lineTo(0, H); g.closePath(); g.fill();
+  g.fillStyle = '#e8f7fb';
+  g.beginPath(); g.moveTo(0, top + 55); g.bezierCurveTo(W * 0.35, top + 72, W * 0.7, top + 25, W, top - 30);
+  g.lineTo(W, H); g.lineTo(0, H); g.closePath(); g.fill();
+  g.fillStyle = C.navy;
+  g.beginPath(); g.moveTo(0, top + 65); g.bezierCurveTo(W * 0.35, top + 85, W * 0.7, top + 40, W, top - 15);
+  g.lineTo(W, H); g.lineTo(0, H); g.closePath(); g.fill();
+}
+
+// subtle woven-PP texture over printed art
+function drawWeave(g, W, H, alpha = 0.05) {
+  g.save(); g.globalAlpha = alpha;
+  for (let x = 0; x < W; x += 6) { g.fillStyle = (x / 6) % 2 ? '#000' : '#fff'; g.fillRect(x, 0, 3, H); }
+  for (let y = 0; y < H; y += 6) { g.fillStyle = (y / 6) % 2 ? '#000' : '#fff'; g.fillRect(0, y, W, 3); }
+  g.restore();
+}
+
+function faceCanvas() {
+  const W = 1024, H = Math.round(W * BAG.h / BAG.w);
+  const c = makeCanvas(W, H), g = c.getContext('2d');
+  g.fillStyle = C.paper; g.fillRect(0, 0, W, H);
+  return { c, g, W, H };
+}
+
+function frontTexture() {
+  const { c, g, W, H } = faceCanvas();
+  drawHeader(g, W, 250);
+  g.textAlign = 'center';
+  g.fillStyle = C.teal; g.font = font(800, 150); g.fillText('PVDF RESIN', W / 2, 520);
+  g.fillStyle = C.navy; g.font = font(500, 54); g.fillText('Polyvinylidene Fluoride', W / 2, 610);
+  g.fillStyle = C.teal; g.fillRect(W / 2 - 45, 665, 90, 7);
+
+  g.textAlign = 'left'; g.fillStyle = C.grey;
+  const L = 150;
+  g.font = font(500, 44); g.fillText('Grade:', L, 810);
+  g.fillStyle = C.navy; g.font = font(700, 50); g.fillText('FF9202B', L + 170, 810);
+  g.fillStyle = C.grey; g.font = font(500, 44);
+  g.fillText('Batch No.:', L, 885); g.fillRect(L + 225, 890, 440, 2);
+  g.fillText('Production Date:', L, 960); g.fillRect(L + 330, 965, 335, 2);
+
+  g.fillStyle = C.navy;
+  g.font = font(800, 46); g.fillText('NET WEIGHT', L, 1080);
+  g.font = font(800, 84); g.fillText('25 KG', L + 300, 1075);
+  g.font = font(800, 46); g.fillText('GROSS WEIGHT', L, 1160);
+  g.font = font(800, 58); g.fillText('25.15 KGS', L + 355, 1158);
+
+  drawBottomWave(g, W, H, 1290);
+  g.fillStyle = C.white; g.font = font(700, 40); g.letterSpacing = '4px';
+  g.fillText('MADE IN CHINA', 120, H - 70);
+  drawWeave(g, W, H);
+  return c;
+}
+
+function backTexture() {
+  const { c, g, W, H } = faceCanvas();
+  drawHeader(g, W, 250);
+  g.textAlign = 'center';
+  g.fillStyle = C.teal; g.font = font(800, 150); g.fillText('PVDF RESIN', W / 2, 520);
+
+  const L = 120, R = W - 120;
+  const rule = y => { g.fillStyle = C.navy; g.fillRect(L, y, R - L, 3); };
+  g.textAlign = 'left';
+  rule(610);
+  g.fillStyle = C.navy; g.font = font(800, 48); g.fillText('STORAGE & HANDLING', L, 670); rule(695);
+  g.fillStyle = C.grey; g.font = font(500, 42);
+  ['Store in a cool, dry place.', 'Keep package tightly closed.', 'Protect from moisture and contamination.', 'Refer to SDS before handling.']
+    .forEach((t, i) => g.fillText(t, L, 770 + i * 60));
+  rule(1030);
+  g.fillStyle = C.navy; g.font = font(800, 48); g.fillText('MANUFACTURER', L, 1090); rule(1115);
+  g.fillStyle = C.grey; g.font = font(500, 42);
+  g.fillText('Ningxia Fufeng Technology Co., Ltd.', L, 1190);
+  g.fillText('Country of Origin: China', L, 1250);
+
+  drawBottomWave(g, W, H, 1330);
+  drawWeave(g, W, H);
+  return c;
+}
+
+// side gusset: vertical logo + TOPFLON + 25 KG. Drawn upright then read top-to-bottom.
+function sideTexture() {
+  const W = Math.round(1024 * BAG.d / BAG.w), H = Math.round(1024 * BAG.h / BAG.w);
+  const c = makeCanvas(W, H), g = c.getContext('2d');
+  g.fillStyle = C.paper; g.fillRect(0, 0, W, H);
+  drawLogo(g, W / 2, 230, 48);
+  g.save(); g.translate(W / 2, 300); g.rotate(Math.PI / 2);
+  g.fillStyle = C.navy; g.textBaseline = 'middle'; g.textAlign = 'left';
+  g.font = font(800, 70); g.fillText('TOPFLON', 0, 0);
+  g.fillStyle = C.teal; g.fillRect(360, -3, 110, 6);
+  g.fillStyle = C.navy; g.fillText('25 KG', 520, 0);
+  g.restore();
+  g.fillStyle = C.navy; g.fillRect(0, H - 250, W, 250);
+  g.fillStyle = C.cyan; g.fillRect(0, H - 262, W, 12);
+  drawWeave(g, W, H);
+  return c;
+}
+
+function plainTexture() {
+  const c = makeCanvas(256, 256), g = c.getContext('2d');
+  g.fillStyle = C.paper; g.fillRect(0, 0, 256, 256); drawWeave(g, 256, 256, 0.06);
+  return c;
+}
+
+// tiling bump map for woven polypropylene
+function weaveBump() {
+  const c = makeCanvas(64, 64), g = c.getContext('2d');
+  g.fillStyle = '#808080'; g.fillRect(0, 0, 64, 64);
+  for (let i = 0; i < 64; i += 8) {
+    for (let j = 0; j < 64; j += 8) {
+      const over = ((i + j) / 8) % 2 === 0;
+      const grd = over ? g.createLinearGradient(i, 0, i + 8, 0) : g.createLinearGradient(0, j, 0, j + 8);
+      grd.addColorStop(0, '#6a6a6a'); grd.addColorStop(0.5, '#b8b8b8'); grd.addColorStop(1, '#6a6a6a');
+      g.fillStyle = grd; g.fillRect(i, j, 8, 8);
+    }
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  return t;
+}
+
+/* ---------- bag geometry: box deformed into a filled, pillowed sack ---------- */
+function bagGeometry() {
+  const { w, h, d } = BAG;
+  const geo = new THREE.BoxGeometry(w, h, d, 48, 72, 20);
+  const p = geo.attributes.position, v = new THREE.Vector3();
+  const smooth = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  for (let i = 0; i < p.count; i++) {
+    v.fromBufferAttribute(p, i);
+    const u = v.x / (w / 2), y = v.y / (h / 2), s = v.z / (d / 2);    // each in [-1,1]
+    // powder settles: belly bulges most slightly below centre
+    const yb = (y + 0.15) / 1.15;
+    const belly = (1 - u * u) * Math.max(0, 1 - Math.pow(Math.abs(yb), 4));
+    let z = v.z * (1 + 0.55 * belly);
+    let x = v.x * (1 + 0.035 * (1 - s * s) * (1 - y * y));
+    // top: flattened into a heat-sealed mouth
+    const topPinch = smooth(0.62, 1.0, y);
+    z *= 1 - 0.93 * topPinch;
+    x *= 1 - 0.035 * topPinch * (1 - u * u);
+    // bottom: squared-off, slightly rounded base
+    const botRound = smooth(-0.9, -1.0, y);
+    z *= 1 - 0.18 * botRound;
+    // soft wrinkles near the top shoulders
+    const wr = topPinch * (1 - topPinch) * 4;
+    z += Math.sign(v.z) * 0.004 * wr * Math.sin(u * 11 + y * 7) * Math.sign(s || 1);
+    // slight shoulder sag
+    const yy = v.y - 0.018 * topPinch * u * u * h;
+    p.setXYZ(i, x, yy, z);
+  }
+  geo.computeVertexNormals();
+  return geo;
+}
+
+function seamFin() {
+  // heat-sealed top flap with stitch line
+  const c = makeCanvas(1024, 64), g = c.getContext('2d');
+  g.fillStyle = '#f2f4f7'; g.fillRect(0, 0, 1024, 64);
+  g.strokeStyle = '#c3cad6'; g.lineWidth = 3; g.setLineDash([14, 8]);
+  g.beginPath(); g.moveTo(0, 36); g.lineTo(1024, 36); g.stroke();
+  drawWeave(g, 1024, 64, 0.08);
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+  const geo = new THREE.BoxGeometry(BAG.w * 0.965, 0.03, 0.004);
+  return new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.8 }));
+}
+
+function makeBag(maxAniso) {
+  const bump = weaveBump();
+  const mat = (canvas, repX, repY) => {
+    const map = new THREE.CanvasTexture(canvas);
+    map.colorSpace = THREE.SRGBColorSpace; map.anisotropy = maxAniso;
+    const b = bump.clone(); b.needsUpdate = true; b.repeat.set(repX, repY);
+    return new THREE.MeshPhysicalMaterial({
+      map, bumpMap: b, bumpScale: 0.6, roughness: 0.68, metalness: 0, envMapIntensity: 0.55,
+      clearcoat: 0.18, clearcoatRoughness: 0.5, sheen: 0.2, sheenColor: new THREE.Color('#ffffff'),
+    });
+  };
+  const side = sideTexture(), plain = plainTexture();
+  // BoxGeometry material order: +x, -x, +y, -y, +z, -z
+  const mats = [
+    mat(side, 12, 60), mat(side, 12, 60),
+    mat(plain, 40, 12), mat(plain, 40, 12),
+    mat(frontTexture(), 40, 60), mat(backTexture(), 40, 60),
+  ];
+  const group = new THREE.Group();
+  const body = new THREE.Mesh(bagGeometry(), mats);
+  body.castShadow = true; body.receiveShadow = true;
+  group.add(body);
+  const fin = seamFin(); fin.position.y = BAG.h / 2 + 0.006; fin.castShadow = true;
+  group.add(fin);
+  group.position.y = BAG.h / 2;
+  return group;
+}
+
+/* ---------- scene ---------- */
+await document.fonts.load('800 40px Barlow');
+await document.fonts.load('500 40px Barlow');
+await document.fonts.load('700 40px "Noto Sans SC"', '氟峰');
+
+const canvas = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.9;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+
+const camera = new THREE.PerspectiveCamera(32, 1, 0.01, 50);
+camera.position.set(0.55, 0.62, 1.85);
+
+const controls = new OrbitControls(camera, canvas);
+controls.target.set(0, BAG.h * 0.5, 0);
+controls.enableDamping = true;
+controls.minDistance = 0.8; controls.maxDistance = 4;
+controls.maxPolarAngle = Math.PI * 0.49;
+controls.autoRotate = true; controls.autoRotateSpeed = 1.2;
+
+const key = new THREE.DirectionalLight(0xffffff, 1.25);
+key.position.set(1.6, 2.4, 2.0); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048); key.shadow.radius = 6; key.shadow.bias = -0.0005;
+Object.assign(key.shadow.camera, { left: -1.2, right: 1.2, top: 1.4, bottom: -0.4, near: 0.1, far: 8 });
+scene.add(key);
+const rim = new THREE.DirectionalLight(0xcfe6ff, 0.6); rim.position.set(-2, 1.5, -2); scene.add(rim);
+scene.add(new THREE.HemisphereLight(0xffffff, 0xb8c2d0, 0.35));
+
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(10, 10), new THREE.ShadowMaterial({ opacity: 0.22 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+
+const aniso = renderer.capabilities.getMaxAnisotropy();
+const bagA = makeBag(aniso);
+const bagB = makeBag(aniso);
+bagB.rotation.y = Math.PI;            // second bag shows its back panel, like the reference photo
+bagB.visible = false;
+const rig = new THREE.Group(); rig.add(bagA, bagB); scene.add(rig);
+
+function setPair(on) {
+  bagB.visible = on;
+  bagA.position.x = on ? -0.3 : 0;
+  bagB.position.x = on ? 0.3 : 0;
+  bagA.rotation.y = on ? 0.12 : 0;
+  bagB.rotation.y = Math.PI - (on ? 0.12 : 0);
+  controls.target.set(0, BAG.h * 0.5, 0);
+  // pull the camera back so both bags stay in frame
+  const dir = camera.position.clone().sub(controls.target).normalize();
+  camera.position.copy(controls.target).addScaledVector(dir, on ? 2.6 : 1.9);
+}
+
+/* ---------- UI ---------- */
+const btnSpin = document.getElementById('btnSpin');
+const btnPair = document.getElementById('btnPair');
+btnSpin.onclick = () => { controls.autoRotate = !controls.autoRotate; btnSpin.setAttribute('aria-pressed', controls.autoRotate); };
+btnPair.onclick = () => { const on = !bagB.visible; setPair(on); btnPair.setAttribute('aria-pressed', on); };
+let tween = null;
+function lookFrom(angle) {
+  controls.autoRotate = false; btnSpin.setAttribute('aria-pressed', 'false');
+  const r = Math.hypot(camera.position.x - controls.target.x, camera.position.z - controls.target.z);
+  tween = { from: Math.atan2(camera.position.x, camera.position.z), to: angle, t: 0, r, y: camera.position.y };
+  let diff = ((tween.to - tween.from + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI;
+  tween.to = tween.from + diff;
+}
+document.getElementById('btnFront').onclick = () => lookFrom(0);
+document.getElementById('btnBack').onclick = () => lookFrom(Math.PI);
+
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.fov = w < h ? 44 : 32;       // keep the bag framed on phones
+  camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+
+document.getElementById('loading').remove();
+const clock = new THREE.Clock();
+renderer.setAnimationLoop(() => {
+  const dt = clock.getDelta();
+  if (tween) {
+    tween.t = Math.min(1, tween.t + dt * 1.4);
+    const e = 1 - Math.pow(1 - tween.t, 3);
+    const a = tween.from + (tween.to - tween.from) * e;
+    camera.position.set(Math.sin(a) * tween.r, tween.y, Math.cos(a) * tween.r);
+    if (tween.t >= 1) tween = null;
+  }
+  controls.update();
+  renderer.render(scene, camera);
+});
+</script>
+</body>
+</html>
