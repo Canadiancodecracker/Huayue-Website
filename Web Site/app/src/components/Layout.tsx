@@ -247,7 +247,7 @@ export function Footer({ lang }: { lang: Lang }) {
           <p>{t.renderingNote}</p>
           <p>© {currentYear} 石嘴山市华岳新材料科技有限公司 {lang === 'zh' ? '版权所有' : 'All rights reserved.'}</p>
           {showICP ? (
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-2 text-center text-xs">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-2 text-center text-base">
               <a
                 className="hover:text-[#2DD4BF] transition-colors"
                 href="https://beian.miit.gov.cn/"
@@ -263,7 +263,7 @@ export function Footer({ lang }: { lang: Lang }) {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <img src="/images/beian-gongan.png" alt="" className="h-4 w-4" loading="lazy" decoding="async" />
+                  <img src="/images/beian-gongan.png" alt="" className="h-5 w-auto" loading="lazy" decoding="async" />
                   <span>宁公网安备{POLICE_CODE}号</span>
                 </a>
               ) : null}
